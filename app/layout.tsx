@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
+import { neobrutalism } from '@clerk/themes';
+
 import {
   ClerkProvider,
   SignInButton,
@@ -23,7 +25,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      appearance={{
+        baseTheme: [neobrutalism]
+      }}
+    >
       <html lang="en">
         <body className={`${inter.className} min-h-screen h-screen overflow-hidden flex flex-col`}>
           {children}
