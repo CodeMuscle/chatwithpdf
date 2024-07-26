@@ -59,6 +59,7 @@ function useUpload(){
       })
 
       setStatus(StatusText.GENERATING);
+      // Generate AI Embeddings...
 
       setFileId(fileIdToUploadTo);
 

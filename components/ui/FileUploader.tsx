@@ -11,7 +11,7 @@ import {
   RocketIcon,
   SaveIcon
 } from 'lucide-react'
-import useUpload from '@/hooks/useUpload'
+import useUpload, { StatusText } from '@/hooks/useUpload'
 import { useRouter } from 'next/navigation'
 
 const FileUploader = () => {
@@ -35,7 +35,24 @@ const FileUploader = () => {
       await handleUpload(file);
     } else {
     }
-  }, [])
+  }, []);
+
+  const statusIcons: {
+    [key in StatusText]: JSX.Element;
+  } = {
+    [StatusText.UPLOADING]: (
+      <RocketIcon className="h-16 w-16 text-indigo-600" />
+    ),
+    [StatusText.UPLOADED]: (
+      <CheckCircleIcon className="h-16 w-16 text-indigo-600" />
+    ),
+    [StatusText.SAVING]: (
+      <SaveIcon className="h-16 w-16 text-indigo-600" />
+    ),
+    [StatusText.GENERATING]: (
+      <HammerIcon className="h-16 w-16 text-indigo-600 animate-bounce" />
+    ),
+  }
 
   const { getRootProps, getInputProps, isDragActive, isFocused, isDragAccept } =
     useDropzone({
@@ -52,18 +69,39 @@ const FileUploader = () => {
     <div className="flex flex-col gap-4 items-center max-w-7xl mx-auto">
       {/* Loading... */}
 
-      {uploadInProgress ? (
-        <div>
-          {progress} %
-        </div>
-      ) : (
-        <div>
+      <div className="mt-32 flex flex-col gap-4 items-center max-w-7xl mx-auto">
+        {uploadInProgress ? (
+          <div 
+            className={`radial-progress bg-indigo-300 text-white border-indigo-600 border-4 ${progress === 100 && "hidden"}`}
+            role="progressbar"
+            style={{
+              // @ts-ignore
+              "--value": progress,
+              "--size": "12em",
+              "--thickness": "1.3rem",
+            }}
+          >
+            {progress} %
+          </div>
 
-          {/* @ts-ignore */}
-          {status}
-        </div>
-      )}
+          // Render Status Icon
 
+        ) : (
+          <div>
+
+            {/* Render Status Icon */}
+            {
+              // @ts-ignore
+              statusIcons[status!]
+            }
+
+            <p className="text-indigo-600 animate-pulse">
+              {/* @ts-ignore */}
+              {status}
+            </p>
+          </div>
+        )}
+        </div>
       <div
         {...getRootProps()}
         className={`p-10 border-2 border-dashed mt-10 w-[90%] mx-auto border-indigo-600 text-indigo-600 rounded-lg h-96 flex items-center justify-center ${
