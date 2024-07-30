@@ -18,7 +18,7 @@ const model = new ChatOpenAI({
   modelName: 'gpt-4o'
 })
 
-export const indexName = 'papafam'
+export const indexName = 'papfam'
 
 export async function generateDocs(docId: string) {
   const { userId } = await auth()
@@ -119,5 +119,5 @@ export async function generateEmbeddingsInPineconeVectorStore(docId: string) {
     return pineconeVectorStore;
   }
 
-  
+
 }
